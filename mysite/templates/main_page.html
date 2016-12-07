@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+        <title>Three Card Jake</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Three Card Jake</a>
+            </div>
+          </div>
+        </nav>
+
+        <div class="container">
+
+            <div class="row">
+                Hand:
+                {% for c in hand %}
+                    {{c.toString()}}
+                {% endfor %}
+            </div>
+            <div class="row">
+                Prize Card:
+                {{game.prizeCard.toString()}}
+            </div>
+            {% for p in game.players %}
+                {{p.name}}:
+                <div>
+                    Scorepile:
+                    {% for c in p.scorePile %}
+                        {{c.toString()}}
+                    {% endfor %}
+                </div>
+                <div>
+                    Sum:
+                    {{game.sumCardRanks(p.scorePile)}}
+                </div>
+                <div>
+                    # of Cards in Hand:
+                    {{p.getHandLength()}}
+                </div>
+            {% endfor %}
+            <div>
+                Cards in Deck:
+                {{game.getDeckLength()}}
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <form action="." method="POST">
+                    <textarea class="form-control" name="move" placeholder="Enter your move here, using a sequence of 'y's and 'n's depending on if you want to play each card or not. After you've moved, you can hit refresh to see if your opponent has moved."></textarea>
+                    <input type="submit" value="Submit Move">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+        {% if "prizeCard" in game.previousRound %}
+            <div class="container">
+                Previous Round:
+                {% for p in game.players %}
+                    <div>
+                        {{p.name}}:
+                        {% for card in game.previousRound[p] %}
+                            {{card.toString()}}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div>
+                    Previous Prize Card:
+                    {{game.previousRound["prizeCard"].toString()}}
+                </div>
+            </div>
+        {% endif %}
+
+    </body>
+</html>
